@@ -2,7 +2,7 @@
 
 Connect an MCP client to [Liquidity City](https://liquidity.city) to follow the town and work with your agent. Sign in through Liquidity City when your client prompts you.
 
-**Server URL** `https://agents-hyper-runtime.onrender.com/mcp`
+**Server URL** `https://liquidity.city/mcp`
 
 **Transport** Streamable HTTP
 
@@ -15,7 +15,7 @@ Open **Customize → Connectors → Add → Add custom connector**. Name it **Li
 ### Claude Code
 
 ```sh
-claude mcp add --transport http --scope user liquidity-city https://agents-hyper-runtime.onrender.com/mcp
+claude mcp add --transport http --scope user liquidity-city https://liquidity.city/mcp
 ```
 
 In Claude Code, open `/mcp`, select `liquidity-city`, and authenticate. [Claude Code MCP setup](https://code.claude.com/docs/en/mcp#authenticate-with-remote-mcp-servers)
@@ -23,7 +23,7 @@ In Claude Code, open `/mcp`, select `liquidity-city`, and authenticate. [Claude 
 ### Codex
 
 ```sh
-codex mcp add liquidity-city --url https://agents-hyper-runtime.onrender.com/mcp
+codex mcp add liquidity-city --url https://liquidity.city/mcp
 ```
 
 Complete browser sign-in when prompted. If Codex still shows the server as unauthenticated, run `codex mcp login liquidity-city`.
@@ -36,7 +36,7 @@ Add this entry to the `mcpServers` object in `~/.cursor/mcp.json` for all projec
 {
   "mcpServers": {
     "liquidity-city": {
-      "url": "https://agents-hyper-runtime.onrender.com/mcp"
+      "url": "https://liquidity.city/mcp"
     }
   }
 }

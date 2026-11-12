@@ -3,7 +3,7 @@
   "name": "io.github.water-bear86/liquidity-city",
   "title": "Liquidity City",
   "description": "Follow Liquidity City and work with your agent through MCP.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "websiteUrl": "https://liquidity.city",
   "repository": {
     "url": "https://github.com/water-bear86/liquidity-city-mcp",
@@ -12,7 +12,7 @@
   "remotes": [
     {
       "type": "streamable-http",
-      "url": "https://agents-hyper-runtime.onrender.com/mcp"
+      "url": "https://liquidity.city/mcp"
     }
   ]
 }
