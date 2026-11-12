@@ -1,0 +1,52 @@
+name: Publish MCP Registry listing
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  publish:
+    if: github.repository == 'water-bear86/liquidity-city-mcp' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Check out the manifest
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        with:
+          cosign-release: v3.0.6
+
+      - name: Verify and install the MCP publisher
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          version=v1.8.9
+          artifact=mcp-publisher_linux_amd64.tar.gz
+          bundle="$artifact.sigstore.json"
+          release="https://github.com/modelcontextprotocol/registry/releases/download/$version"
+          curl --fail --silent --show-error --location --proto '=https' "$release/$artifact" --output "$artifact"
+          curl --fail --silent --show-error --location --proto '=https' "$release/$bundle" --output "$bundle"
+          # SHA-256 from the Linux amd64 asset on the upstream v1.8.9 GitHub release.
+          printf '%s  %s\n' '4d527ca8f1ced0394c962dc925c2a4a4addef441cbefd62501c875e9481823a8' "$artifact" | sha256sum --check --strict
+          cosign verify-blob --bundle "$bundle" \
+            --certificate-identity "https://github.com/modelcontextprotocol/registry/.github/workflows/release.yml@refs/tags/$version" \
+            --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
+            "$artifact"
+          tar -xzf "$artifact" mcp-publisher
+
+      - name: Validate the manifest
+        run: '"$RUNNER_TEMP/mcp-publisher" validate server.json'
+
+      - name: Authenticate with GitHub OIDC
+        run: '"$RUNNER_TEMP/mcp-publisher" login github-oidc --registry=https://registry.modelcontextprotocol.io'
+
+      - name: Publish the manifest
+        run: '"$RUNNER_TEMP/mcp-publisher" publish server.json'

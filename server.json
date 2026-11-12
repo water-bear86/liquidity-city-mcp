@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.water-bear86/liquidity-city",
+  "title": "Liquidity City",
+  "description": "Follow Liquidity City and work with your agent through MCP.",
+  "version": "0.1.0",
+  "websiteUrl": "https://liquidity.city",
+  "repository": {
+    "url": "https://github.com/water-bear86/liquidity-city-mcp",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://agents-hyper-runtime.onrender.com/mcp"
+    }
+  ]
+}
